@@ -369,8 +369,13 @@ error:
 
 static NSString *plist_dict_get_nsstring(plist_t dict, const char *key) {
     plist_t *value = plist_dict_get_item(dict, key);
-    NSString *string = [NSString stringWithUTF8String:plist_get_string_ptr(value, NULL)];
-    return string;
+    const char* testNullStr = plist_get_string_ptr(value, NULL);
+    if (testNullStr != NULL) {
+        NSString *string = [NSString stringWithUTF8String: testNullStr];
+        return string;
+    }
+    return @"";
+    
 }
 
 - (NSArray<JBApp *> *)parseLookupResult:(plist_t)plist {
